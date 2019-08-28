@@ -42,12 +42,11 @@ export default {
       
       axios.get(`http://api.zippopotam.us/IN/${zip}`)
       .then(function(res) {
-        if(res.status == 404) {
-          this.showAlert();
-        }
         this.info = res.data;   
       }.bind(this))
-      .catch()
+      .catch((err) => {
+        this.showAlert();
+      })
       
     },
     showAlert() {
