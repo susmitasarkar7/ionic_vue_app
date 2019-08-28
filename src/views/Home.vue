@@ -8,6 +8,7 @@
     <ion-content class="ion-padding">
       <ZipSearch v-on:get-zip="getZipInfo" />
       <ZipInfo v-bind:info="info" />
+      <ClearInfo v-bind:info="info" v-on:clear-info="clearInfo" />
     </ion-content>
   </div>
 </template>
@@ -15,18 +16,19 @@
 <script>
 import ZipSearch from "../components/ZipSearch";
 import ZipInfo from "../components/ZipInfo";
+import ClearInfo from "../components/ClearInfo";
 import axios from "axios";
 
 export default {
   name: 'home',
   components: {
     ZipSearch,
-    ZipInfo  
+    ZipInfo,
+    ClearInfo  
   },
   data() {
     return {
       info: null,
-      info1: null,
     }
   },
   methods: {
@@ -37,17 +39,20 @@ export default {
       // } 
       // const info = await res.json();
       // console.log(info);
-      // this.info1 = await res.json().bind(this);
-      // console.log(this.info1);
       
       axios.get(`http://api.zippopotam.us/IN/${zip}`)
       .then(function(res) {
         this.info = res.data;   
       }.bind(this))
-      .catch((err) => {
+      .catch(() => {
         this.showAlert();
       })
       
+    },
+    clearInfo() {
+      // console.log('foo');
+      
+      this.info = null;
     },
     showAlert() {
       return this.$ionic.alertController
