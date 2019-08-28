@@ -26,8 +26,25 @@ export default {
     methods: {
         onSubmit(e) {
             e.preventDefault();
-            console.log(this.zip);
-            
+            // Zip Regex
+            const isValidZip = /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/.test(this.zip);
+            // Test for valid zip
+            if(!isValidZip) {
+                this.showAlert();
+                this.zip = "";
+            } else {
+                this.$emit("get-zip", this.zip);
+                this.zip = "";
+            }
+        },
+        showAlert() {
+            return this.$ionic.alertController
+                .create({
+                    header: "Enter Zipcode",
+                    message: "Please enter a valid Indian zipcode",
+                    buttons: ["OK"]
+                })
+                .then(a => a.present());
         }
     }
 }
